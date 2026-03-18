@@ -1,5 +1,12 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useNavigate
+} from 'react-router-dom';
+
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
@@ -8,17 +15,16 @@ import Routines from './pages/Routines';
 import CreateRoutine from './pages/CreateRoutine';
 import AppLayout from './components/AppLayout';
 import StartWorkout from './pages/StartWorkout';
-
+import Profile from './pages/Profile';
 
 const API_BASE_URL = 'http://localhost:5001';
 
 function RootRedirect() {
   const navigate = useNavigate();
 
-  // Simple effect-only component to decide where to send the user on app load
-  // without introducing global state.
   useEffect(() => {
     const token = localStorage.getItem('token');
+
     if (!token) {
       navigate('/login', { replace: true });
       return;
@@ -27,9 +33,7 @@ function RootRedirect() {
     async function checkProfile() {
       try {
         const res = await fetch(`${API_BASE_URL}/api/profile/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+          headers: { Authorization: `Bearer ${token}` }
         });
 
         if (res.status === 401) {
@@ -44,7 +48,7 @@ function RootRedirect() {
         }
 
         navigate('/dashboard', { replace: true });
-      } catch (_err) {
+      } catch {
         navigate('/login', { replace: true });
       }
     }
@@ -54,6 +58,13 @@ function RootRedirect() {
 
   return null;
 }
+
+// Temporary placeholders
+function Analysis() {
+  return <div className="text-white p-4">Analysis coming soon</div>;
+}
+
+
 
 function App() {
   return (
@@ -68,8 +79,11 @@ function App() {
           <Route path="/routines" element={<Routines />} />
           <Route path="/routines/new" element={<CreateRoutine />} />
           <Route path="/routines/:id" element={<CreateRoutine />} />
-          <Route path="/profile-setup" element={<ProfileSetup />} />
           <Route path="/workout" element={<StartWorkout />} />
+
+          {/* NEW CLEAN NAV ROUTES */}
+          <Route path="/analysis" element={<Analysis />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
@@ -79,4 +93,3 @@ function App() {
 }
 
 export default App;
-

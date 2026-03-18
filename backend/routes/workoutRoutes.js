@@ -19,6 +19,20 @@ function getBestSet(sets) {
   return best;
 }
 
+// GET: Fetch all workouts for logged-in user
+router.get('/', authMiddleware, async (req, res) => {
+  try {
+    const workouts = await WorkoutSession.find({
+      userId: req.userId
+    }).sort({ date: -1 });
+
+    res.json(workouts);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error fetching workouts' });
+  }
+});
+
 // POST: Save workout
 router.post('/', authMiddleware, async (req, res) => {
   try {

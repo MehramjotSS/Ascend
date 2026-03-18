@@ -1,4 +1,4 @@
-## Gym Progress App – Phase 0 Setup
+## ASCEND
 
 Monorepo-style project with a Node/Express/MongoDB backend and a Vite + React + Tailwind frontend.
 
